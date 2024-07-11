@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_string"
+        android:icon="@drawable/alphabet"
+        android:title="String" />
+
+    <item
+        android:id="@+id/navigation_triangle"
+        android:icon="@drawable/triangle"
+        android:title="Triangle" />
+
+</menu>

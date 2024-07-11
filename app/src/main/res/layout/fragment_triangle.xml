@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingBottom="60dp"
+    tools:context=".ui.triangle.TriangleFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="18dp"
+        android:text="Cho 1 điểm có  tọa độ A(x,y) và 3 điểm X, Y, Z là tọa độ của 1 hình tam giác. Kiểm tra xem hình tam giác được tạo từ 3 điểm kia có chứa A không?"
+        android:textSize="18sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/editTextX"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:background="@drawable/edit_text_background"
+            android:gravity="center"
+            android:hint="Nhập X (x,y)" />
+
+        <EditText
+            android:id="@+id/editTextY"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/editTextX"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_text_background"
+            android:gravity="center"
+            android:hint="Nhập Y (x,y)" />
+
+        <EditText
+            android:id="@+id/editTextZ"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/edit_text_background"
+            android:gravity="center"
+            android:hint="Nhập Z (x,y)" />
+
+        <EditText
+            android:id="@+id/editTextA"
+            android:layout_width="170dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/editTextZ"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_text_background"
+            android:gravity="center"
+            android:hint="Nhập A (x,y)"
+            android:textColor="#FF0000"
+            android:textColorHint="#FF0000" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/buttonDraw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="10dp"
+        android:text="Kiểm tra" />
+
+    <TextView
+        android:id="@+id/textViewResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:text=""
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <com.example.androidproject.ui.triangle.CoordinateView
+        android:id="@+id/coordinateView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
