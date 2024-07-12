@@ -87,15 +87,20 @@ class TriangleFragment : Fragment() {
         val areaAZX = calculateArea(aX, aY, zX, zY, xX, xY)
 
         return when {
-            areaAXY + areaAYZ + areaAZX == areaXYZ -> {
-                if (areaAXY == 0f || areaAYZ == 0f || areaAZX == 0f) {
-                    "Kết quả: Điểm A nằm trên cạnh của tam giác XYZ"
+            areaXYZ == 0f -> "XYZ không phải là hình tam giác"
+            else -> {
+                if (areaAXY + areaAYZ + areaAZX == areaXYZ) {
+                    if (areaAXY == 0f || areaAYZ == 0f || areaAZX == 0f) {
+                        "Kết quả: Điểm A nằm trên cạnh của tam giác XYZ"
+                    } else {
+                        "Kết quả: Điểm A nằm trong tam giác XYZ"
+                    }
                 } else {
-                    "Kết quả: Điểm A nằm trong tam giác XYZ"
+                    "Kết quả: Điểm A nằm ngoài tam giác XYZ"
                 }
             }
-            else -> "Kết quả: Điểm A nằm ngoài tam giác XYZ"
         }
+
     }
 
     private fun calculateArea(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float): Float {
