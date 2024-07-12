@@ -11,18 +11,25 @@ import com.example.androidproject.R
 import com.example.androidproject.databinding.FragmentTriangleBinding
 
 class TriangleFragment : Fragment() {
-
     private var _binding: FragmentTriangleBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentTriangleBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        return root
+    }
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
         val editTextA: EditText = binding.editTextA
         val editTextX: EditText = binding.editTextX
         val editTextY: EditText = binding.editTextY
@@ -31,12 +38,13 @@ class TriangleFragment : Fragment() {
         val coordinateView: CoordinateView = binding.coordinateView
 
         buttonDraw.setOnClickListener {
-            val points = listOf(
-                getCoordinatesFromEditText("A", editTextA),
-                getCoordinatesFromEditText("X", editTextX),
-                getCoordinatesFromEditText("Y", editTextY),
-                getCoordinatesFromEditText("Z", editTextZ)
-            )
+            val points =
+                listOf(
+                    getCoordinatesFromEditText("A", editTextA),
+                    getCoordinatesFromEditText("X", editTextX),
+                    getCoordinatesFromEditText("Y", editTextY),
+                    getCoordinatesFromEditText("Z", editTextZ),
+                )
 
             binding.textViewResult.visibility = View.VISIBLE
 
@@ -55,11 +63,12 @@ class TriangleFragment : Fragment() {
 
             coordinateView.setPoints(points.filterNotNull())
         }
-
-        return root
     }
 
-    private fun getCoordinatesFromEditText(name: String, editText: EditText): Triple<String, Float, Float>? {
+    private fun getCoordinatesFromEditText(
+        name: String,
+        editText: EditText,
+    ): Triple<String, Float, Float>? {
         val text = editText.text.toString()
         val coords = text.split(",")
         return if (coords.size == 2) {
@@ -75,7 +84,10 @@ class TriangleFragment : Fragment() {
         }
     }
 
-    private fun checkPointInTriangle(pointA: Triple<String, Float, Float>, trianglePoints: List<Triple<String, Float, Float>>): String {
+    private fun checkPointInTriangle(
+        pointA: Triple<String, Float, Float>,
+        trianglePoints: List<Triple<String, Float, Float>>,
+    ): String {
         val (aX, aY) = Pair(pointA.second, pointA.third)
         val (xX, xY) = Pair(trianglePoints[0].second, trianglePoints[0].third)
         val (yX, yY) = Pair(trianglePoints[1].second, trianglePoints[1].third)
@@ -100,12 +112,16 @@ class TriangleFragment : Fragment() {
                 }
             }
         }
-
     }
 
-    private fun calculateArea(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float): Float {
-        return Math.abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2.0).toFloat()
-    }
+    private fun calculateArea(
+        x1: Float,
+        y1: Float,
+        x2: Float,
+        y2: Float,
+        x3: Float,
+        y3: Float,
+    ): Float = Math.abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2.0).toFloat()
 
     override fun onDestroyView() {
         super.onDestroyView()

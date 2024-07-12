@@ -24,6 +24,15 @@ class StringFragment : Fragment() {
         _binding = FragmentStringBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        return root
+    }
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+
         val editTextInput: EditText = binding.editTextInput
         val buttonOK: ImageView = binding.buttonOK
         val textViewResult: TextView = binding.textViewResult
@@ -69,8 +78,6 @@ class StringFragment : Fragment() {
                 textViewResult.text = Html.fromHtml(resultString, Html.FROM_HTML_MODE_COMPACT)
             }
         }
-
-        return root
     }
 
     override fun onDestroyView() {
