@@ -10,11 +10,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.androidproject.databinding.FragmentStringBinding
 
 class StringFragment : Fragment() {
     private var _binding: FragmentStringBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: StringViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,9 +25,7 @@ class StringFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentStringBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(
@@ -36,47 +37,36 @@ class StringFragment : Fragment() {
         val editTextInput: EditText = binding.editTextInput
         val buttonOK: ImageView = binding.buttonOK
         val textViewResult: TextView = binding.textViewResult
-        textViewResult.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                android.R.color.holo_red_dark,
-            ),
-        )
-        textViewResult.text = "⚠️ Vui lòng nhập một chuỗi"
 
-        buttonOK.setOnClickListener {
-            val inputString = editTextInput.text.toString()
-
-            if (inputString.isEmpty()) {
-                textViewResult.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        android.R.color.holo_red_dark,
-                    ),
-                )
-                textViewResult.text = "⚠️ Vui lòng nhập một chuỗi"
-            } else {
-                val charCountMap = mutableMapOf<Char, Int>()
-
-                for (char in inputString) {
-                    charCountMap[char] = charCountMap.getOrDefault(char, 0) + 1
-                }
-
-                val resultString =
-                    charCountMap.entries
-                        .mapIndexed { index, entry ->
-                            "${index + 1}. " + "<b><font color='#34A049'>${entry.key}</font></b>: " +
-                                "<font color='#6200EA'>${entry.value}</font>"
-                        }.joinToString(separator = "<br>")
-
+        viewModel.resultString.observe(
+            viewLifecycleOwner,
+            Observer { result ->
                 textViewResult.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         android.R.color.black,
                     ),
                 )
-                textViewResult.text = Html.fromHtml(resultString, Html.FROM_HTML_MODE_COMPACT)
-            }
+                textViewResult.text = Html.fromHtml(result, Html.FROM_HTML_MODE_COMPACT)
+            },
+        )
+
+        viewModel.errorMessage.observe(
+            viewLifecycleOwner,
+            Observer { error ->
+                textViewResult.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        android.R.color.holo_red_dark,
+                    ),
+                )
+                textViewResult.text = error
+            },
+        )
+
+        buttonOK.setOnClickListener {
+            val inputString = editTextInput.text.toString()
+            viewModel.processInputString(inputString)
         }
     }
 
