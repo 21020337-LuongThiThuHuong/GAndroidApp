@@ -5,7 +5,11 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import java.text.DecimalFormat
 
 class CoordinateView(
@@ -46,6 +50,46 @@ class CoordinateView(
         return if (maxCoordinate > 0) minOf(width, height) / (2 * maxCoordinate) else 1f
     }
 
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val touchX = event.x
+            val touchY = event.y
+            checkPoint(touchX, touchY)
+            return true
+        }
+        return super.onTouchEvent(event)
+    }
+
+    private fun checkPoint(
+        touchX: Float,
+        touchY: Float,
+    ) {
+        val viewModel =
+            ViewModelProvider(context as FragmentActivity).get(TriangleViewModel::class.java)
+        val scale = calculateScale(points)
+        val centerX = width / 2
+        val centerY = height / 2
+
+        val actualX = (touchX - centerX) / scale
+        val actualY = (centerY - touchY) / scale
+
+        val touchPoint = Triple("chạm", actualX, actualY)
+
+        val pointMap = points.associateBy { it.first }
+        val trianglePoints =
+            listOf(
+                pointMap["X"],
+                pointMap["Y"],
+                pointMap["Z"],
+            ).filterNotNull()
+
+        if (trianglePoints.size == 3) {
+            val result =
+                viewModel.checkPointInTriangle(touchPoint.first, touchPoint, trianglePoints)
+            Snackbar.make(this, result, Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
@@ -56,11 +100,9 @@ class CoordinateView(
         val scale = calculateScale(points)
 
         canvas.drawLine(centerX, 0f, centerX, height, paint)
-
         canvas.drawLine(0f, centerY, width, centerY, paint)
 
         val pointMap = points.associateBy { it.first }
-        val pointA = pointMap["A"]
         val pointX = pointMap["X"]
         val pointY = pointMap["Y"]
         val pointZ = pointMap["Z"]

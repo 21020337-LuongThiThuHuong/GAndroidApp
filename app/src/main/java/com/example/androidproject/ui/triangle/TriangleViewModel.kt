@@ -47,7 +47,7 @@ class TriangleViewModel : ViewModel() {
             val pointA = validPoints.first { it.first == "A" }
             val trianglePoints = validPoints.filter { it.first != "A" }
 
-            val result = checkPointInTriangle(pointA, trianglePoints)
+            val result = checkPointInTriangle("A", pointA, trianglePoints)
             Log.d("TriangleViewModel", "Result: $result")
             _resultString.value = result
             _errorMessage.value = ""
@@ -76,33 +76,32 @@ class TriangleViewModel : ViewModel() {
         }
     }
 
-    private fun checkPointInTriangle(
-        pointA: Triple<String, Float, Float>,
+    internal fun checkPointInTriangle(
+        pointName: String,
+        touchPoint: Triple<String, Float, Float>,
         trianglePoints: List<Triple<String, Float, Float>>,
     ): String {
-        val (aX, aY) = Pair(pointA.second, pointA.third)
+        val (touchX, touchY) = Pair(touchPoint.second, touchPoint.third)
         val (xX, xY) = Pair(trianglePoints[0].second, trianglePoints[0].third)
         val (yX, yY) = Pair(trianglePoints[1].second, trianglePoints[1].third)
         val (zX, zY) = Pair(trianglePoints[2].second, trianglePoints[2].third)
 
         val areaXYZ = calculateArea(xX, xY, yX, yY, zX, zY)
-        val areaAXY = calculateArea(aX, aY, xX, xY, yX, yY)
-        val areaAYZ = calculateArea(aX, aY, yX, yY, zX, zY)
-        val areaAZX = calculateArea(aX, aY, zX, zY, xX, xY)
+        val areaAXY = calculateArea(touchX, touchY, xX, xY, yX, yY)
+        val areaAYZ = calculateArea(touchX, touchY, yX, yY, zX, zY)
+        val areaAZX = calculateArea(touchX, touchY, zX, zY, xX, xY)
 
         return when {
             areaXYZ == 0f -> "XYZ không phải là hình tam giác"
-            else -> {
-                if (areaAXY + areaAYZ + areaAZX == areaXYZ) {
-                    if (areaAXY == 0f || areaAYZ == 0f || areaAZX == 0f) {
-                        "Kết quả: Điểm A nằm trên cạnh của tam giác XYZ"
-                    } else {
-                        "Kết quả: Điểm A nằm trong tam giác XYZ"
-                    }
+            areaAXY + areaAYZ + areaAZX == areaXYZ -> {
+                if (areaAXY == 0f || areaAYZ == 0f || areaAZX == 0f) {
+                    "Kết quả: Điểm $pointName nằm trên cạnh của tam giác XYZ"
                 } else {
-                    "Kết quả: Điểm A nằm ngoài tam giác XYZ"
+                    "Kết quả: Điểm $pointName nằm trong tam giác XYZ"
                 }
             }
+
+            else -> "Kết quả: Điểm $pointName nằm ngoài tam giác XYZ"
         }
     }
 
