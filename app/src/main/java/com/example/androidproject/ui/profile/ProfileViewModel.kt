@@ -3,7 +3,6 @@ package com.example.androidproject.ui.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.json.JSONArray
 import org.json.JSONObject
 
 class ProfileViewModel : ViewModel() {
