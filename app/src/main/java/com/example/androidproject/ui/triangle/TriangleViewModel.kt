@@ -37,7 +37,7 @@ class TriangleViewModel : ViewModel() {
         _points.value = points.filterNotNull()
 
         if (errorMessage != null) {
-            _errorMessage.value = errorMessage
+            _errorMessage.value = errorMessage!!
             _resultString.value = ""
         } else if (emptyCount > 0) {
             _errorMessage.value = "Bạn chưa nhập đủ các trường tọa độ 4 điểm"
@@ -66,12 +66,12 @@ class TriangleViewModel : ViewModel() {
                 Triple(name, x, y)
             } else {
                 _errorMessage.value =
-                    "Bạn nhập sai định dạng điểm: $name. Định dạng đúng là x,y (VD: 2.5,3.0)"
+                    "Bạn nhập sai định dạng điểm $name. Định dạng đúng là x,y (VD: 2.5,3.0)"
                 null
             }
         } else {
             _errorMessage.value =
-                "Bạn nhập sai định dạng điểm: $name. Định dạng đúng là x,y (VD: 2.5,3.0)"
+                "Bạn nhập sai định dạng điểm $name. Định dạng đúng là x,y (VD: 2.5,3.0)"
             null
         }
     }
