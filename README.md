@@ -62,7 +62,6 @@ Bài tập tìm hiểu các components, android lifecycle, dùng mô hình MVVM.
 
 **4. Vid demo**
 
-![Video](https://drive.google.com/file/d/1T1WmkEHQCklv4_xLk1n18HFVDecXJOHP/view?usp=sharing)
-
+https://github.com/user-attachments/assets/aba2289b-f13c-4112-be09-b8807b85f212
 
 
